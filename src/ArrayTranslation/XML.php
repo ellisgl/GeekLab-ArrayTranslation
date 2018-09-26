@@ -59,10 +59,8 @@ class XML implements DomTranslationInterface
             // Nope, we will rename the key some something that should be "unique".
             foreach($array as $key => $value)
             {
-                $this->Arrays->renameKey($array, $key, '_int_' . $key);
+                $array = $this->Arrays->renameKey($array, $key, '_int_' . $key);
             }
-
-
         }
 
 
