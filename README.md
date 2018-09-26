@@ -8,10 +8,10 @@ Supports:
 * XML
 * PHP internal session serialized data
 * PHP internal binary serialized data
-* PHP Serialized() data.
+* PHP Serialized() data
+* YAML
 
 Todo:
 * WDDX support
-* YAML support
 * More tests (Only JSON and XML are 'tested')
 * Documentation...
