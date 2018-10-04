@@ -2,7 +2,7 @@
     "name": "geeklab/arraytranslation",
     "description": "Convert array to another data format or convert a data format to an array.",
     "type": "library",
-    "version" : "1.0.1",
+    "version" : "1.0.2",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
