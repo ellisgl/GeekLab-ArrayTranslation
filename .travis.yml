@@ -1,6 +1,6 @@
 sudo: false
 before_script:
-- echo "extension = <extension>.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- echo "extension = yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 - composer self
 - composer --version
 - composer install -n
