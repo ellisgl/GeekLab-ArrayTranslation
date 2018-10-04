@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.com/ellisgl/GeekLab-ArrayTranslation.svg?branch=master)](https://travis-ci.com/ellisgl/GeekLab-ArrayTranslation)
 
 # GeekLab-ArrayTranslation
-Convert array to another data format or convert a data format to an array.
+Convert an array to another data format or convert a data format to an array.
 
-Supports:
+## Supports:
 * JSON
 * XML
 * PHP internal session serialized data
@@ -11,7 +11,40 @@ Supports:
 * PHP Serialized() data
 * YAML
 
-Todo:
+## Todo:
 * WDDX support
-* More tests (Only JSON and XML are 'tested')
-* Documentation...
+* igbinary support
+
+## Installation:
+composer require geeklab/arraytranslation 
+
+## Usage:
+    <?php
+    require_once('../vendor/autoload.php');
+    
+    $at  =  \GeekLab\ArrayTranslation::create('yaml');
+    $out = $at->encode(array('a' => 'x', 'b' => y', 'c' => 'z');
+
+## API:
+### \GeekLab\ArrayTranslation::create(string $type, string $handler): object
+
+#### Description:
+This is the factory to return the class for array<->data type translation.
+
+`$type` can be set to xml, json, yaml, php, php_binary or php_binary for now.
+
+`$handler` is for pointing to a customer handler. Must implement GeekLab\ArrayTranslation\TranslationInterface
+#### Usage:
+`$at = \GeekLab\ArrayTranslation::create('php');`
+
+### \GeekLab\ArrayTranslation::encode(array $arr): string
+
+### Description:
+This method will convert an array to the type the object was created with.
+
+### Usage
+`$ta = $at->encode(array('a', 'b', 'c'));`
+
+### \GeekLab\ArrayTranslation::encode(string $str): array
+
+### This method will convert a data type (string) to an array.
