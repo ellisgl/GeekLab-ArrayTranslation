@@ -86,8 +86,7 @@ class XMLTest extends \Codeception\Test\Unit
             ],
         ];
 
-        $at       = new \GeekLab\ArrayTranslation();
-        $this->at = $at->create('xml');
+        $this->at = \GeekLab\ArrayTranslation::create('xml');
     }
 
     protected function _after()
@@ -363,9 +362,9 @@ class XMLTest extends \Codeception\Test\Unit
     public function it_can_decode_xml()
     {
         $arr = $this->at->encode($this->ultimateArray);
-        var_dump($arr);
-        var_dump($this->at->decode($arr));
+        //var_dump($arr);
+        //var_dump($this->at->decode($arr));
         //echo $this->getXMLSnapshot('it_can_encode_xml');
-        //$this->assertMatchesSnapshot($this->at->decode($this->getXMLSnapshot('it_can_encode_xml')));
+        $this->assertMatchesSnapshot($this->at->decode($this->getXMLSnapshot('it_can_encode_xml')));
     }
 }

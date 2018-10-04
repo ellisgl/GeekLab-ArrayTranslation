@@ -1,6 +1,5 @@
 <?php
-
-class JSONTest extends \Codeception\Test\Unit
+class YAMLTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
@@ -20,28 +19,40 @@ class JSONTest extends \Codeception\Test\Unit
     /**
      * @var string
      */
-    protected $str = '{"a":"b","c":{"d":"e","0":"f"}}';
+    protected $str = "";
 
     protected function _before()
     {
-        $this->at = \GeekLab\ArrayTranslation::create('json');
+        $this->at = \GeekLab\ArrayTranslation::create('yaml');
+        $this->str = <<<EOT
+---
+a: b
+c:
+  d: e
+  0: f
+...
+
+EOT;
+
     }
 
     protected function _after()
     {
     }
 
+    // Encoder Tests
+
     /** @test */
-    public function it_can_encode_JSON()
+    public function it_can_encode_yaml()
     {
-        // Make sure array converts to a JSON.
+        //var_dump($this->at->encode($this->arr));
         self::assertEquals($this->str, $this->at->encode($this->arr));
     }
 
+
     /** @test */
-    public function it_can_decode_JSON()
+    public function it_can_decode_yaml()
     {
-        // Make sure JSON converts to array
         self::assertEquals($this->arr, $this->at->decode($this->str));
     }
 }

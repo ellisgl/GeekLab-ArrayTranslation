@@ -6,7 +6,7 @@ use GeekLab\ArrayTranslation\TranslationInterface;
 
 class ArrayTranslation
 {
-    public function create(string $type = '', string $handler = '')
+    public static function create(string $type = '', string $handler = '')
     {
         if(!empty($handler))
         {
@@ -40,13 +40,6 @@ class ArrayTranslation
                 return new ArrayTranslation\PHP();
                 break;
 
-            case 'wddx':
-                return new ArrayTranslation\WDDX();
-                break;
-
-            case 'igbinary':
-                return new ArrayTranslation\igbinary();
-                break;
 
             case 'json':
                 return new ArrayTranslation\JSON();
@@ -55,9 +48,18 @@ class ArrayTranslation
             case 'xml':
                 return new ArrayTranslation\XML();
                 break;
+
             case 'yaml':
                 return new ArrayTranslation\YAML();
                 break;
+
+            case 'wddx':
+                //return new ArrayTranslation\WDDX();
+                //break;
+
+            case 'igbinary':
+                //return new ArrayTranslation\igbinary();
+                //break;
 
             default:
                 // Throw invalid 'data' error

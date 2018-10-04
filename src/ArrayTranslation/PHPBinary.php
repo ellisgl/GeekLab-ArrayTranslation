@@ -78,7 +78,7 @@ class PHPBinary implements TranslationInterface
             $key = substr($str, 1, $l);
             $str = substr($str, $l + 1);
 
-            if (empty(str))
+            if (empty($str))
             {
                 return [];
             }
