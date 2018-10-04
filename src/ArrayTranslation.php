@@ -4,6 +4,10 @@ namespace GeekLab;
 
 use GeekLab\ArrayTranslation\TranslationInterface;
 
+/**
+ * Class ArrayTranslation - Factory
+ * @package geeklab\arraytranslation
+ */
 class ArrayTranslation
 {
     public static function create(string $type = '', string $handler = '')
