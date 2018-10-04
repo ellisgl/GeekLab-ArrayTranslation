@@ -42,10 +42,13 @@ This is the factory to return the class for array<->data type translation.
 ### Description:
 This method will convert an array to the type the object was created with.
 
-### Usage
+### Usage:
 `$x = $at->encode(array('a', 'b', 'c'));`
 
 ### \GeekLab\ArrayTranslation::encode(string $str): array
 
-### This method will convert a string (data type) to an array.
+### Description:
+This method will convert a string (data type) to an array.
+
+### Usage:
 `$y = $at->decode('["a","b","c"]');`
