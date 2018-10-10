@@ -1,5 +1,5 @@
 <?php
-
+// Todo: Create a Interfaces\Convert pacakge.
 namespace GeekLab\ArrayTranslation;
 
 interface TranslationInterface
