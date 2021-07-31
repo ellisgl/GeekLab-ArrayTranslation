@@ -1,13 +1,18 @@
 <?php
 
-use Spatie\Snapshots\MatchesSnapshots;
+namespace unit;
 
-class XMLTest extends \Codeception\Test\Unit
+use Codeception\Test\Unit;
+use GeekLab\ArrayTranslation\DomTranslationInterface;
+use Spatie\Snapshots\MatchesSnapshots;
+use UnitTester;
+
+class XMLTest extends Unit
 {
     use MatchesSnapshots;
 
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -58,7 +63,7 @@ class XMLTest extends \Codeception\Test\Unit
     ];
 
     /**
-     * @var \GeekLab\ArrayTranslation\DomTranslationInterface
+     * @var DomTranslationInterface
      */
     protected $at;
 
@@ -66,14 +71,14 @@ class XMLTest extends \Codeception\Test\Unit
      * Test in the inverse. =)
      *
      * @param  string $testName
-     * @return bool|string
+     * @return bool | string
      */
     protected function getXMLSnapshot(string $testName)
     {
         return file_get_contents($this->getSnapshotDirectory() . DIRECTORY_SEPARATOR . get_class($this) . '__' . $testName .'__1.xml');
     }
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->testArray = [
             'Good guy' => [
@@ -89,32 +94,32 @@ class XMLTest extends \Codeception\Test\Unit
         $this->at = \GeekLab\ArrayTranslation::create('xml');
     }
 
-    protected function _after()
+    protected function _after(): void
     {
     }
 
     // Encoder Tests
 
     /** @test */
-    public function it_can_encode_xml()
+    public function it_can_encode_xml(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode($this->testArray));
     }
 
     /** @test */
-    public function it_can_encode_empty_array()
+    public function it_can_encode_empty_array(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode([]));
     }
 
     /** @test */
-    public function it_can_encode_root_element()
+    public function it_can_encode_root_element(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode([], 'helloyouluckpeople'));
     }
 
     /** @test */
-    public function it_can_encode_root_element_attributes_can_also_be_set_in_simplexmlelement_style()
+    public function it_can_encode_root_element_attributes_can_also_be_set_in_simplexmlelement_style(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode([], [
             '@attributes' => [
@@ -124,86 +129,98 @@ class XMLTest extends \Codeception\Test\Unit
     }
 
     /** @test */
-    public function it_can_encode_array_with_no_keys()
+    public function it_can_encode_array_with_no_keys(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode(['one', 'two', 'three']));
     }
 
     /** @test */
-    public function encode_will_raise_an_exception_when_spaces_should_not_be_replaced_and_a_key_contains_a_space()
+    public function encode_will_raise_an_exception_when_spaces_should_not_be_replaced_and_a_key_contains_a_space(): void
     {
         $this->expectException('DOMException');
         $this->at->encode($this->testArray, '', false);
     }
 
     /** @test */
-    public function it_can_encode_values_as_basic_collection()
+    public function it_can_encode_values_as_basic_collection(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'user' => ['one', 'two', 'three'],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'user' => ['one', 'two', 'three'],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_xml_encoding_type()
+    public function it_can_encode_xml_encoding_type(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode([], '', false, 'UTF-8'));
     }
 
     /** @test */
-    public function it_can_encode_xml_version()
+    public function it_can_encode_xml_version(): void
     {
         $this->assertMatchesSnapshot($this->at->encode([], '', false, null, '1.1'));
     }
 
     /** @test */
-    public function it_can_encode_values_as_collection()
+    public function it_can_encode_values_as_collection(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'user' => [
-                                                                  [
-                                                                      'name' => 'een',
-                                                                      'age'  => 10,
-                                                                  ],
-                                                                  [
-                                                                      'name' => 'twee',
-                                                                      'age'  => 12,
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'user' => [
+                        [
+                            'name' => 'een',
+                            'age'  => 10,
+                        ],
+                        [
+                            'name' => 'twee',
+                            'age'  => 12,
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_mixed_sequential_array()
+    public function it_can_encode_mixed_sequential_array(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'user' => [
-                                                                  [
-                                                                      'name' => 'een',
-                                                                      'age'  => 10,
-                                                                  ],
-                                                                  'twee' => [
-                                                                      'name' => 'twee',
-                                                                      'age'  => 12,
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'user' => [
+                        [
+                            'name' => 'een',
+                            'age'  => 10,
+                        ],
+                        'twee' => [
+                            'name' => 'twee',
+                            'age'  => 12,
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_values_with_special_characters()
+    public function it_can_encode_values_with_special_characters(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode(['name' => 'this & that']));
     }
 
     /** @test */
-    public function it_can_encode_group_by_values_when_values_are_in_a_numeric_array()
+    public function it_can_encode_group_by_values_when_values_are_in_a_numeric_array(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode(['user' => ['foo', 'bar']]));
     }
 
     /** @test */
-    public function it_can_encode_attributes_to_xml()
+    public function it_can_encode_attributes_to_xml(): void
     {
         $withAttributes                            = $this->testArray;
         $withAttributes['Good guy']['_attributes'] = ['nameType' => 1];
@@ -211,28 +228,32 @@ class XMLTest extends \Codeception\Test\Unit
     }
 
     /** @test */
-    public function it_can_encode_attributes_as_collection()
+    public function it_can_encode_attributes_as_collection(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'user' => [
-                                                                  [
-                                                                      '_attributes' => [
-                                                                          'name' => 'een',
-                                                                          'age'  => 10,
-                                                                      ],
-                                                                  ],
-                                                                  [
-                                                                      '_attributes' => [
-                                                                          'name' => 'twee',
-                                                                          'age'  => 12,
-                                                                      ],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'user' => [
+                        [
+                            '_attributes' => [
+                                'name' => 'een',
+                                'age'  => 10,
+                            ],
+                        ],
+                        [
+                            '_attributes' => [
+                                'name' => 'twee',
+                                'age'  => 12,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_attributes_also_can_be_set_in_simplexmlelement_style()
+    public function it_can_encode_attributes_also_can_be_set_in_simplexmlelement_style(): void
     {
         $withAttributes                            = $this->testArray;
         $withAttributes['Good guy']['@attributes'] = ['nameType' => 1];
@@ -241,111 +262,131 @@ class XMLTest extends \Codeception\Test\Unit
     }
 
     /** @test */
-    public function it_can_encode_values_set_with_attributes_with_special_characters()
+    public function it_can_encode_values_set_with_attributes_with_special_characters(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'movie' => [
-                                                                  [
-                                                                      'title' => [
-                                                                          '_attributes' => ['category' => 'SF'],
-                                                                          '_value'      => 'STAR WARS',
-                                                                      ],
-                                                                  ],
-                                                                  [
-                                                                      'title' => [
-                                                                          '_attributes' => ['category' => 'Children'],
-                                                                          '_value'      => 'tom & jerry',
-                                                                      ],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'movie' => [
+                        [
+                            'title' => [
+                                '_attributes' => ['category' => 'SF'],
+                                '_value'      => 'STAR WARS',
+                            ],
+                        ],
+                        [
+                            'title' => [
+                                '_attributes' => ['category' => 'Children'],
+                                '_value'      => 'tom & jerry',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_value_also_can_be_set_in_simplexmlelement_style()
+    public function it_can_encode_value_also_can_be_set_in_simplexmlelement_style(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'movie' => [
-                                                                  [
-                                                                      'title' => [
-                                                                          '@attributes' => ['category' => 'SF'],
-                                                                          '@value'      => 'STAR WARS',
-                                                                      ],
-                                                                  ],
-                                                                  [
-                                                                      'title' => [
-                                                                          '@attributes' => ['category' => 'Children'],
-                                                                          '@value'      => 'tom & jerry',
-                                                                      ],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'movie' => [
+                        [
+                            'title' => [
+                                '@attributes' => ['category' => 'SF'],
+                                '@value'      => 'STAR WARS',
+                            ],
+                        ],
+                        [
+                            'title' => [
+                                '@attributes' => ['category' => 'Children'],
+                                '@value'      => 'tom & jerry',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_values_set_as_cdata()
+    public function it_can_encode_values_set_as_cdata(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'movie' => [
-                                                                  [
-                                                                      'title' => [
-                                                                          '_attributes' => ['category' => 'SF'],
-                                                                          '_cdata'      => '<p>STAR WARS</p>',
-                                                                      ],
-                                                                  ],
-                                                                  [
-                                                                      'title' => [
-                                                                          '_attributes' => ['category' => 'Children'],
-                                                                          '_cdata'      => '<p>tom & jerry</p>',
-                                                                      ],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'movie' => [
+                        [
+                            'title' => [
+                                '_attributes' => ['category' => 'SF'],
+                                '_cdata'      => '<p>STAR WARS</p>',
+                            ],
+                        ],
+                        [
+                            'title' => [
+                                '_attributes' => ['category' => 'Children'],
+                                '_cdata'      => '<p>tom & jerry</p>',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_cdata_values_can_also_be_set_in_simplexmlelement_style()
+    public function it_can_encode_cdata_values_can_also_be_set_in_simplexmlelement_style(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'movie' => [
-                                                                  [
-                                                                      'title' => [
-                                                                          '@attributes' => ['category' => 'SF'],
-                                                                          '@cdata'      => '<p>STAR WARS</p>',
-                                                                      ],
-                                                                  ],
-                                                                  [
-                                                                      'title' => [
-                                                                          '@attributes' => ['category' => 'Children'],
-                                                                          '@cdata'      => '<p>tom & jerry</p>',
-                                                                      ],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'movie' => [
+                        [
+                            'title' => [
+                                '@attributes' => ['category' => 'SF'],
+                                '@cdata'      => '<p>STAR WARS</p>',
+                            ],
+                        ],
+                        [
+                            'title' => [
+                                '@attributes' => ['category' => 'Children'],
+                                '@cdata'      => '<p>tom & jerry</p>',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function encode_doesnt_pollute_attributes_in_collection_and_sequential_nodes()
+    public function encode_doesnt_pollute_attributes_in_collection_and_sequential_nodes(): void
     {
-        $this->assertMatchesXmlSnapshot($this->at->encode([
-                                                              'books' => [
-                                                                  'book' => [
-                                                                      ['name' => 'A', '@attributes' => ['z' => 1]],
-                                                                      ['name' => 'B'],
-                                                                      ['name' => 'C'],
-                                                                  ],
-                                                              ],
-                                                          ]));
+        $this->assertMatchesXmlSnapshot(
+            $this->at->encode(
+                [
+                    'books' => [
+                        'book' => [
+                            ['name' => 'A', '@attributes' => ['z' => 1]],
+                            ['name' => 'B'],
+                            ['name' => 'C'],
+                        ],
+                    ],
+                ]
+            )
+        );
     }
 
     /** @test */
-    public function it_can_encode_keys_starting_with_numeric()
+    public function it_can_encode_keys_starting_with_numeric(): void
     {
         $this->assertMatchesXmlSnapshot($this->at->encode(['10this' => 1]));
     }
 
     /** @test */
-    public function encode_can_convert_array_to_dom()
+    public function encode_can_convert_array_to_dom(): void
     {
         $this->at->convertToDom($this->testArray);
 
@@ -359,12 +400,9 @@ class XMLTest extends \Codeception\Test\Unit
 
     // Decoder tests
     /** @test */
-    public function it_can_decode_xml()
+    public function it_can_decode_xml(): void
     {
         $arr = $this->at->encode($this->ultimateArray);
-        //var_dump($arr);
-        //var_dump($this->at->decode($arr));
-        //echo $this->getXMLSnapshot('it_can_encode_xml');
         $this->assertMatchesSnapshot($this->at->decode($this->getXMLSnapshot('it_can_encode_xml')));
     }
 }

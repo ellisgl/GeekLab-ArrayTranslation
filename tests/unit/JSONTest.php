@@ -1,14 +1,21 @@
 <?php
 
-class JSONTest extends \Codeception\Test\Unit
+namespace unit;
+
+use Codeception\Test\Unit;
+use GeekLab\ArrayTranslation;
+use GeekLab\ArrayTranslation\TranslationInterface;
+use UnitTester;
+
+class JSONTest extends Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
     /**
-     * @var \GeekLab\ArrayTranslation\TranslationInterface
+     * @var TranslationInterface
      */
     protected $at;
 
@@ -22,24 +29,24 @@ class JSONTest extends \Codeception\Test\Unit
      */
     protected $str = '{"a":"b","c":{"d":"e","0":"f"}}';
 
-    protected function _before()
+    protected function _before(): void
     {
-        $this->at = \GeekLab\ArrayTranslation::create('json');
+        $this->at = ArrayTranslation::create('json');
     }
 
-    protected function _after()
+    protected function _after(): void
     {
     }
 
     /** @test */
-    public function it_can_encode_JSON()
+    public function it_can_encode_JSON(): void
     {
         // Make sure array converts to a JSON.
         self::assertEquals($this->str, $this->at->encode($this->arr));
     }
 
     /** @test */
-    public function it_can_decode_JSON()
+    public function it_can_decode_JSON(): void
     {
         // Make sure JSON converts to array
         self::assertEquals($this->arr, $this->at->decode($this->str));

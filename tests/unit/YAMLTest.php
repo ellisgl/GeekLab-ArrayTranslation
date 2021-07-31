@@ -1,13 +1,21 @@
 <?php
-class YAMLTest extends \Codeception\Test\Unit
+
+namespace unit;
+
+use Codeception\Test\Unit;
+use GeekLab\ArrayTranslation;
+use GeekLab\ArrayTranslation\TranslationInterface;
+use UnitTester;
+
+class YAMLTest extends Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
     /**
-     * @var \GeekLab\ArrayTranslation\TranslationInterface
+     * @var TranslationInterface
      */
     protected $at;
 
@@ -21,9 +29,9 @@ class YAMLTest extends \Codeception\Test\Unit
      */
     protected $str = "";
 
-    protected function _before()
+    protected function _before(): void
     {
-        $this->at = \GeekLab\ArrayTranslation::create('yaml');
+        $this->at = ArrayTranslation::create('yaml');
         $this->str = <<<EOT
 ---
 a: b
@@ -36,22 +44,21 @@ EOT;
 
     }
 
-    protected function _after()
+    protected function _after(): void
     {
     }
 
     // Encoder Tests
 
     /** @test */
-    public function it_can_encode_yaml()
+    public function it_can_encode_yaml(): void
     {
-        //var_dump($this->at->encode($this->arr));
         self::assertEquals($this->str, $this->at->encode($this->arr));
     }
 
 
     /** @test */
-    public function it_can_decode_yaml()
+    public function it_can_decode_yaml(): void
     {
         self::assertEquals($this->arr, $this->at->decode($this->str));
     }
