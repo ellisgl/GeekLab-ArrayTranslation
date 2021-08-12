@@ -6,18 +6,19 @@ namespace GeekLab\ArrayTranslation;
  * Translate array <-> YAML
  *
  * Class YAML
+ *
  * @package GeekLab\ArrayTranslation
  */
 class YAML implements TranslationInterface
 {
     /**
-     * @param  array $arr
+     * @param array $arr
+     *
      * @return string
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
@@ -25,13 +26,13 @@ class YAML implements TranslationInterface
     }
 
     /**
-     * @param  string $str
+     * @param string $str
+     *
      * @return array
      */
     public function decode(string $str): array
     {
-        if(empty($str))
-        {
+        if (empty($str)) {
             return [];
         }
 
