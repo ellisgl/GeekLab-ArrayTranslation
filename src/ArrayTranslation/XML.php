@@ -14,6 +14,7 @@ use GeekLab\ArrayTranslation;
  *   https://github.com/vyuldashev/xml-to-array
  *
  * Class XML
+ *
  * @package GeekLab\ArrayTranslation
  */
 class XML implements DomTranslationInterface
@@ -36,6 +37,7 @@ class XML implements DomTranslationInterface
      * @var \GeekLab\ToolBox\Arrays;
      */
     private $Arrays;
+
     /**
      * Converts an array to DOMDocument
      *
@@ -44,25 +46,28 @@ class XML implements DomTranslationInterface
      * @param bool   $replaceSpacesByUnderScoresInKeyNames
      * @param null   $xmlEncoding
      * @param string $xmlVersion
+     *
      * @throws DOMException
      */
-    public function convertToDom(array $array, $rootElement = '', $replaceSpacesByUnderScoresInKeyNames = true, $xmlEncoding = null, $xmlVersion = '1.0')
-    {
+    public function convertToDom(
+        array $array,
+        $rootElement = '',
+        $replaceSpacesByUnderScoresInKeyNames = true,
+        $xmlEncoding = null,
+        $xmlVersion = '1.0'
+    ) {
         $this->Arrays                               = new \GeekLab\ToolBox\Arrays();
         $this->document                             = new DOMDocument($xmlVersion, $xmlEncoding);
         $this->replaceSpacesByUnderScoresInKeyNames = $replaceSpacesByUnderScoresInKeyNames;
 
-        if ($this->isArrayAllKeySequential($array) && !empty($array))
-        {
+        if ($this->isArrayAllKeySequential($array) && !empty($array)) {
             //throw new DOMException('Invalid Character Error');
 
             // Nope, we will rename the key some something that should be "unique".
-            foreach($array as $key => $value)
-            {
+            foreach ($array as $key => $value) {
                 $array = $this->Arrays->renameKey($array, $key, '_int_' . $key);
             }
         }
-
 
         $root = $this->createRootElement($rootElement);
 
@@ -71,23 +76,30 @@ class XML implements DomTranslationInterface
     }
 
     /**
-     * @param  array  $arr
+     * @param array   $arr
      * @param         $rootElement
-     * @param  bool   $replaceSpacesByUnderScoresInKeyNames
-     * @param  null   $xmlEncoding
-     * @param  string $xmlVersion
+     * @param bool    $replaceSpacesByUnderScoresInKeyNames
+     * @param null    $xmlEncoding
+     * @param string  $xmlVersion
+     *
      * @return string
      * @throws DOMException
      */
-    public function encode(array $arr, $rootElement = '', bool $replaceSpacesByUnderScoresInKeyNames = true, $xmlEncoding = null, string $xmlVersion = '1.0'): string
-    {
+    public function encode(
+        array $arr,
+        $rootElement = '',
+        bool $replaceSpacesByUnderScoresInKeyNames = true,
+        $xmlEncoding = null,
+        string $xmlVersion = '1.0'
+    ): string {
         $this->convertToDom($arr, $rootElement, $replaceSpacesByUnderScoresInKeyNames, $xmlEncoding, $xmlVersion);
         return $this->toXML();
     }
 
     /**
-     * @param  string $str
-     * @param  string $xmlType "simplexml"|"domdocument"
+     * @param string $str
+     * @param string $xmlType "simplexml"|"domdocument"
+     *
      * @return array
      * @throws \Exception
      */
@@ -98,24 +110,18 @@ class XML implements DomTranslationInterface
         $array = (array)json_decode(json_encode(simplexml_load_string($str)), true);
 
         // Rename keys
-        if('SimpleXML' == $xmlType)
-        {
+        if ('SimpleXML' == $xmlType) {
             return $array;
-        }
-        elseif('DOMDocument' == $xmlType)
-        {
+        } elseif ('DOMDocument' == $xmlType) {
             // Need convert the '@attributes' to '_attributes'
             $this->Arrays->explore($array, function (&$value, $key)
             {
-               if('@attributes' === $key)
-               {
-                   $this->Arrays->renameKey($value, $key, '_attributes');
-               }
+                if ('@attributes' === $key) {
+                    $this->Arrays->renameKey($value, $key, '_attributes');
+                }
             });
             return $array;
-        }
-        else
-        {
+        } else {
             throw new \Exception('Invalid data XML type: "' . $xmlType . '" is not supported.');
         }
     }
@@ -150,39 +156,25 @@ class XML implements DomTranslationInterface
     {
         $sequential = $this->isArrayAllKeySequential($value);
 
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             $element->nodeValue = htmlspecialchars($value);
             return;
         }
 
-        foreach ($value as $key => $data)
-        {
-            if (!$sequential)
-            {
-                if (($key === '_attributes') || ($key === '@attributes'))
-                {
+        foreach ($value as $key => $data) {
+            if (!$sequential) {
+                if (($key === '_attributes') || ($key === '@attributes')) {
                     $this->addAttributes($element, $data);
-                }
-                elseif ((($key === '_value') || ($key === '@value')) && is_string($data))
-                {
+                } elseif ((($key === '_value') || ($key === '@value')) && is_string($data)) {
                     $element->nodeValue = htmlspecialchars($data);
-                }
-                elseif ((($key === '_cdata') || ($key === '@cdata')) && is_string($data))
-                {
+                } elseif ((($key === '_cdata') || ($key === '@cdata')) && is_string($data)) {
                     $element->appendChild($this->document->createCDATASection($data));
-                }
-                else
-                {
+                } else {
                     $this->addNode($element, $key, $data);
                 }
-            }
-            elseif (is_array($data))
-            {
+            } elseif (is_array($data)) {
                 $this->addCollectionNode($element, $data);
-            }
-            else
-            {
+            } else {
                 $this->addSequentialNode($element, $data);
             }
         }
@@ -197,17 +189,13 @@ class XML implements DomTranslationInterface
      */
     private function addNode(DOMElement $element, $key, $value): void
     {
-        if ($this->replaceSpacesByUnderScoresInKeyNames)
-        {
+        if ($this->replaceSpacesByUnderScoresInKeyNames) {
             $key = str_replace(' ', '_', $key);
         }
 
-        if (is_int($key))
-        {
+        if (is_int($key)) {
             $key = '_int_' . $key;
-        }
-        elseif (is_numeric(substr($key, 0, 1)))
-        {
+        } elseif (is_numeric(substr($key, 0, 1))) {
             $key = '_' . $key;
         }
 
@@ -227,8 +215,7 @@ class XML implements DomTranslationInterface
      */
     private function addCollectionNode(DOMElement $element, $value): void
     {
-        if ($element->childNodes->length === 0 && $element->attributes->length === 0)
-        {
+        if ($element->childNodes->length === 0 && $element->attributes->length === 0) {
             $this->convertElement($element, $value);
             return;
         }
@@ -249,8 +236,7 @@ class XML implements DomTranslationInterface
      */
     private function addSequentialNode(DOMElement $element, $value): void
     {
-        if (empty($element->nodeValue))
-        {
+        if (empty($element->nodeValue)) {
             $element->nodeValue = htmlspecialchars($value);
             return;
         }
@@ -264,18 +250,17 @@ class XML implements DomTranslationInterface
     /**
      * Check if array are all sequential.
      *
-     * @param  array|string $value
+     * @param array|string $value
+     *
      * @return bool
      */
     private function isArrayAllKeySequential($value): bool
     {
-        if (!is_array($value))
-        {
+        if (!is_array($value)) {
             return false;
         }
 
-        if (count($value) <= 0)
-        {
+        if (count($value) <= 0) {
             return true;
         }
 
@@ -290,8 +275,7 @@ class XML implements DomTranslationInterface
      */
     private function addAttributes($element, $data): void
     {
-        foreach ($data as $attrKey => $attrVal)
-        {
+        foreach ($data as $attrKey => $attrVal) {
             $element->setAttribute($attrKey, $attrVal);
         }
     }
@@ -299,13 +283,13 @@ class XML implements DomTranslationInterface
     /**
      * Create the root element.
      *
-     * @param  string|array $rootElement
+     * @param string|array $rootElement
+     *
      * @return DOMElement
      */
     private function createRootElement($rootElement): DOMElement
     {
-        if (is_string($rootElement))
-        {
+        if (is_string($rootElement)) {
             $rootElementName = $rootElement ?: 'root';
             return $this->document->createElement($rootElementName);
         }
@@ -313,10 +297,8 @@ class XML implements DomTranslationInterface
         $rootElementName = $rootElement['rootElementName'] ?? 'root';
         $element         = $this->document->createElement($rootElementName);
 
-        foreach ($rootElement as $key => $value)
-        {
-            if ($key !== '_attributes' && $key !== '@attributes')
-            {
+        foreach ($rootElement as $key => $value) {
+            if ($key !== '_attributes' && $key !== '@attributes') {
                 continue;
             }
 
