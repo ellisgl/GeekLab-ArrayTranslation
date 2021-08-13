@@ -37,6 +37,6 @@ class PHPSerialize implements TranslationInterface
             return [];
         }
 
-        return unserialize($str);
+        return unserialize($str, ['allowed_classes' => true]);
     }
 }

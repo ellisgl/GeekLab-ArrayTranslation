@@ -7,42 +7,39 @@ namespace GeekLab\ArrayTranslation;
  * Stolen from: https://github.com/wikimedia/php-session-serializer/blob/master/src/Wikimedia/PhpSessionSerializer.php
  *
  * Class PHPBinary
+ *
  * @package GeekLab\ArrayTranslation
  */
 class PHPBinary implements TranslationInterface
 {
     /**
-     * @param  array $arr
+     * @param array $arr
+     *
      * @return string
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
         $encodedData = '';
 
-        foreach ($arr as $key => $value)
-        {
-            if (strcmp($key, intval($key)) === 0)
-            {
+        foreach ($arr as $key => $value) {
+            if (strcmp($key, (int)$key) === 0) {
                 continue;
             }
 
             $l = strlen($key);
 
-            if ($l > 127)
-            {
+            if ($l > 127) {
                 continue;
             }
 
             $v = serialize($value);
 
-            if ($v === null)
-            {
-                return null;
+            if ($v === null) {
+                return '';
             }
 
             $encodedData .= chr($l) . $key . $v;
@@ -52,25 +49,23 @@ class PHPBinary implements TranslationInterface
     }
 
     /**
-     * @param  string $str
+     * @param string $str
+     *
      * @return array
      */
     public function decode(string $str): array
     {
         $decodedData = [];
 
-        while ($str !== '' && $str !== false)
-        {
+        while ($str !== '' && $str !== false) {
             $l = ord($str[0]);
 
-            if (strlen($str) < ($l & 127) + 1)
-            {
+            if (strlen($str) < ($l & 127) + 1) {
                 return [];
             }
 
             // "undefined" marker
-            if ($l > 127)
-            {
+            if ($l > 127) {
                 $str = substr($str, ($l & 127) + 1);
                 continue;
             }
@@ -78,16 +73,14 @@ class PHPBinary implements TranslationInterface
             $key = substr($str, 1, $l);
             $str = substr($str, $l + 1);
 
-            if (empty($str))
-            {
+            if (empty($str)) {
                 return [];
             }
 
-            list($ok, $value) = $this->unserializeValue($str);
+            [$ok, $value] = $this->unserializeValue($str);
 
-            if (!$ok)
-            {
-                return null;
+            if (!$ok) {
+                return [];
             }
 
             $decodedData[$key] = $value;
@@ -98,32 +91,31 @@ class PHPBinary implements TranslationInterface
 
     /**
      * @param  $string
+     *
      * @return array
      */
     private function unserializeValue(&$string): array
     {
         $error = null;
 
-        set_error_handler(function ($errNo, $errStr) use (&$error)
+        set_error_handler(static function ($errNo, $errStr) use (&$error)
         {
             $error = $errStr;
             return true;
         });
 
-        $unserialized = unserialize($string);
+        $unserialized = unserialize($string, ['allowed_classes' => true]);
 
         restore_error_handler();
 
-        if ($error !== null)
-        {
+        if ($error !== null) {
             return [false, null];
         }
 
         $serialized = serialize($unserialized);
         $l          = strlen($serialized);
 
-        if (substr($string, 0, $l) !== $serialized)
-        {
+        if (strpos($string, $serialized) !== 0) {
             return [false, null];
         }
 

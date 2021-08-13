@@ -6,18 +6,19 @@ namespace GeekLab\ArrayTranslation;
  * Translate array <-> JSON
  *
  * Class JSON
+ *
  * @package GeekLab\ArrayTranslation
  */
 class JSON implements TranslationInterface
 {
     /**
-     * @param  array $arr
+     * @param array $arr
+     *
      * @return string
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '[]';
         }
 
@@ -25,16 +26,16 @@ class JSON implements TranslationInterface
     }
 
     /**
-     * @param  string $str
+     * @param string $str
+     *
      * @return array
      */
     public function decode(string $str): array
     {
-        if (empty($str) || '[]' === $str || '{}' === $str)
-        {
+        if (empty($str) || '[]' === $str || '{}' === $str) {
             return [];
         }
 
-        return json_decode($str, TRUE);
+        return json_decode($str, true);
     }
 }

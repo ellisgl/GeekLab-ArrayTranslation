@@ -7,25 +7,25 @@ namespace GeekLab\ArrayTranslation;
  * Stolen from: https://github.com/psr7-sessions/session-encode-decode/
  *
  * Class PHP
+ *
  * @package GeekLab\ArrayTranslation
  */
 class PHP implements TranslationInterface
 {
     /**
-     * @param  array $arr
+     * @param array $arr
+     *
      * @return string
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
         $encodedData = '';
 
-        foreach ($arr as $key => $value)
-        {
+        foreach ($arr as $key => $value) {
             $encodedData .= $key . '|' . serialize($value);
         }
 
@@ -33,30 +33,28 @@ class PHP implements TranslationInterface
     }
 
     /**
-     * @param  string $str
+     * @param string $str
+     *
      * @return array
      */
     public function decode(string $str): array
     {
-        if(empty($str))
-        {
+        if (empty($str)) {
             return [];
         }
 
-        preg_match_all('/(^|;|\})(\w+)\|/i', $str, $matches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/(^|;|})(\w+)\|/', $str, $matches, PREG_OFFSET_CAPTURE);
 
         $decodedData = [];
         $lastOffset  = null;
         $currentKey  = '';
 
-        foreach ($matches[2] as $value)
-        {
+        foreach ($matches[2] as $value) {
             $offset = $value[1];
 
-            if (null !== $lastOffset)
-            {
+            if (null !== $lastOffset) {
                 $valueText                = substr($str, $lastOffset, $offset - $lastOffset);
-                $decodedData[$currentKey] = unserialize($valueText);
+                $decodedData[$currentKey] = unserialize($valueText, ['allowed_classes' => true]);
             }
 
             $currentKey = $value[0];
@@ -64,7 +62,7 @@ class PHP implements TranslationInterface
         }
 
         $valueText                = substr($str, $lastOffset);
-        $decodedData[$currentKey] = unserialize($valueText);
+        $decodedData[$currentKey] = unserialize($valueText, ['allowed_classes' => true]);
 
         return $decodedData;
     }
