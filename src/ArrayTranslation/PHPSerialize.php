@@ -12,7 +12,8 @@ namespace GeekLab\ArrayTranslation;
 class PHPSerialize implements TranslationInterface
 {
     /**
-     * @param  array $arr
+     * @param array $arr
+     *
      * @return string
      */
     public function encode(array $arr): string
