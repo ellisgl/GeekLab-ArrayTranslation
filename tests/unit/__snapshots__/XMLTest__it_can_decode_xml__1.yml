@@ -1,0 +1,6 @@
+Good_guy:
+    name: 'Luke Skywalker'
+    weapon: Lightsaber
+Bad_guy:
+    name: Sauron
+    weapon: 'Evil Eye'

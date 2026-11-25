@@ -17,15 +17,13 @@ class PHP implements TranslationInterface
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
         $encodedData = '';
 
-        foreach ($arr as $key => $value)
-        {
+        foreach ($arr as $key => $value) {
             $encodedData .= $key . '|' . serialize($value);
         }
 
@@ -38,8 +36,7 @@ class PHP implements TranslationInterface
      */
     public function decode(string $str): array
     {
-        if(empty($str))
-        {
+        if (empty($str)) {
             return [];
         }
 
@@ -49,12 +46,10 @@ class PHP implements TranslationInterface
         $lastOffset  = null;
         $currentKey  = '';
 
-        foreach ($matches[2] as $value)
-        {
+        foreach ($matches[2] as $value) {
             $offset = $value[1];
 
-            if (null !== $lastOffset)
-            {
+            if (null !== $lastOffset) {
                 $valueText                = substr($str, $lastOffset, $offset - $lastOffset);
                 $decodedData[$currentKey] = unserialize($valueText);
             }

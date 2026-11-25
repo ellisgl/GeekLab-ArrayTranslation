@@ -8,6 +8,7 @@ namespace GeekLab\ArrayTranslation;
  * Class igbinary
  * @package GeekLab\ArrayTranslation
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps -- named after the igbinary extension
 class igbinary implements TranslationInterface
 {
     /**
@@ -16,8 +17,7 @@ class igbinary implements TranslationInterface
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
@@ -30,8 +30,7 @@ class igbinary implements TranslationInterface
      */
     public function decode(string $str): array
     {
-        if(empty($str))
-        {
+        if (empty($str)) {
             return [];
         }
 
