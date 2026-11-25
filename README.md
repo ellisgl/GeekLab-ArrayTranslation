@@ -1,6 +1,9 @@
-[![Build Status](https://travis-ci.com/ellisgl/GeekLab-ArrayTranslation.svg?branch=master)](https://travis-ci.com/ellisgl/GeekLab-ArrayTranslation)
-
 # GeekLab-ArrayTranslation
+[![CI](https://github.com/ellisgl/GeekLab-ArrayTranslation/actions/workflows/ci.yml/badge.svg)](https://github.com/ellisgl/GeekLab-ArrayTranslation/actions/workflows/ci.yml)
+[![Packagist Version](https://img.shields.io/packagist/v/geeklab/arraytranslation)](https://packagist.org/packages/geeklab/arraytranslation)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/geeklab/arraytranslation/php)](https://packagist.org/packages/geeklab/arraytranslation)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%205-brightgreen)](https://phpstan.org/)
+
 Convert an array to another data format or convert a data format to an array.
 
 ## Supports:

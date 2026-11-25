@@ -1,4 +1,5 @@
 <?php
+
 // Todo: Create a Interfaces\Convert package.
 namespace GeekLab\ArrayTranslation;
 

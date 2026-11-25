@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Test;
+
 class JSONTest extends \Codeception\Test\Unit
 {
     /**
@@ -31,14 +33,14 @@ class JSONTest extends \Codeception\Test\Unit
     {
     }
 
-    /** @test */
+    #[Test]
     public function it_can_encode_JSON()
     {
         // Make sure array converts to a JSON.
         self::assertEquals($this->str, $this->at->encode($this->arr));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_decode_JSON()
     {
         // Make sure JSON converts to array

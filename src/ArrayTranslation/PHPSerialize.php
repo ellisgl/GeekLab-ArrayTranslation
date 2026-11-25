@@ -17,8 +17,7 @@ class PHPSerialize implements TranslationInterface
      */
     public function encode(array $arr): string
     {
-        if (empty($arr))
-        {
+        if (empty($arr)) {
             return '';
         }
 
@@ -31,8 +30,7 @@ class PHPSerialize implements TranslationInterface
      */
     public function decode(string $str): array
     {
-        if (empty($str))
-        {
+        if (empty($str)) {
             return [];
         }
 
