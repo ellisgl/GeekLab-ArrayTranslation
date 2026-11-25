@@ -10,18 +10,18 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
         "geeklab/toolbox": "^3.0"
     },
     "require-dev": {
-        "codeception/codeception": "^5.0",
-        "codeception/module-asserts": "^3.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "spatie/phpunit-snapshot-assertions": "^5.4",
         "phpstan/phpstan": "^2",
-        "squizlabs/php_codesniffer": "^3"
+        "squizlabs/php_codesniffer": "^4"
     },
     "autoload": {
         "psr-4": {

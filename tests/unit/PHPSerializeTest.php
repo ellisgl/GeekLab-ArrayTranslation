@@ -1,4 +1,6 @@
 <?php
+
+use PHPUnit\Framework\Attributes\Test;
 class PHPSerializeTest extends \Codeception\Test\Unit
 {
     /**
@@ -32,13 +34,13 @@ class PHPSerializeTest extends \Codeception\Test\Unit
 
     // Encoder Tests
 
-    /** @test */
+    #[Test]
     public function it_can_encode_php_serialized_function()
     {
         self::assertEquals($this->str, $this->at->encode($this->arr));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_decode_php_serialized_function()
     {
         self::assertEquals($this->arr, $this->at->decode($this->str));

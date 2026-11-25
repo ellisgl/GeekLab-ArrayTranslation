@@ -8,7 +8,7 @@ namespace GeekLab\ArrayTranslation;
  * Class igbinary
  * @package GeekLab\ArrayTranslation
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps -- named after the igbinary extension
+// phpcs:ignore Squiz.Classes.ValidClassName.NotPascalCase -- named after the igbinary extension
 class igbinary implements TranslationInterface
 {
     /**
