@@ -3,6 +3,7 @@
 [![Packagist Version](https://img.shields.io/packagist/v/geeklab/arraytranslation)](https://packagist.org/packages/geeklab/arraytranslation)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/geeklab/arraytranslation/php)](https://packagist.org/packages/geeklab/arraytranslation)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%205-brightgreen)](https://phpstan.org/)
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE.BSD)
 
 Convert an array to another data format or convert a data format to an array.
 
